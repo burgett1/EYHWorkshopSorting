@@ -4,6 +4,7 @@
 # Sort EYH participants into workshops based on preferences and existance of partners
 # Russell W. Burgett
 # 3/13/2023 - 3/14/2023
+# 3/13/2024
 
 # import packages
 import os
@@ -20,37 +21,55 @@ rng = np.random.default_rng()
 
 # import csv file as pandas dataframe
 # Note: csv file should be in same directory as .py (will put in README.txt)
+#       or can use os.chdir(path) to go to location of workshop_preferences file
 #       also, made manual changes to csv (and saved under new name) if girl forgot to list partner ID
-file = "EYH_workshop_preferences.csv"
+path = r"/Users/russthebuss/Downloads"
+os.chdir(path)
+
+file = "UPDATED_workshop_preferences_EYH_2024.csv"
 # keep columns with data relevant for sorting
-cols = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-# ['girl_id', 'partner_id', 'ws_1'.,.,.'ws9_5', 'special_workshop_preference']
+cols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+# ['grade', 'girl_id', 'workshop_needs', 'partner_id', 'ws_1'.,.,.'ws9_5', 'special_workshop_preference']
+# varies based on what workshops chairs send you
 df = pd.read_csv(file, usecols=cols)
-# Note: 268 particpants this year
+# Note: 268 particpants this year (2023)
 
 ### Workshop Capacties ###
 seventh_eighth_capacities = [
+    10,
+    13,
+    10,
+    16,
+    13,
     25,
     20,
     12,
-    20,
-    20,
-    15,
-    20,
+    16,
     20,
     15,
-    20,
-    15,
-    25,
-    15,
+    10,
     25,
     12,
+    25,
+    25,
+    11,
+    22,
     15,
-    18,
-    20,
+    11,
+    15,
     25,
 ]
-ninth_capacities = [20, 16, 25, 25, 25, 25, 16, 25]
+ninth_capacities = [
+    10,
+    12,
+    12,
+    10,
+    25,
+    16,
+    10,
+    11,
+    10,
+]
 
 
 ### FUNCTIONS TO SORT EYH PARTICIPANTS DATA (procede with caution) ###
@@ -92,10 +111,10 @@ def sort_special_workshop_preferences(participants_list):
     seventh_eighth_workshops = []
     # for each particpant (pair or single student)
     for participant in participants_list:
-        # if preference == 'special', put in 9th grade workshops list
+        # if preference == 'no_preference', put in 9th grade workshops list
         if participant[-1] == "no_preference":
             ninth_workshops.append(participant)
-        # if preference == 'no_preference', also put in 9th grade workshops list
+        # if preference == 'special', also put in 9th grade workshops list
         elif participant[-1] == "special":
             ninth_workshops.append(participant)
         # otherwise put in 7th/8th grade workshops list
@@ -511,9 +530,12 @@ yes_partner_list, no_partner_list, unique_partners_list = sort_partners(df)
 
 ### FIRST ROUND OF WORKSHOP ASSIGNMENT ###
 
+num_7th8th_workshops = 19 # int
+num_9th_workshops = 9 # int
+
 # initialize emtpy workshop lists
-seventh_eighth_workshops_lists = [[] for _ in range(19)]
-ninth_workshops_lists = [[] for _ in range(9)]
+seventh_eighth_workshops_lists = [[] for _ in range(num_7th8th_workshops)]
+ninth_workshops_lists = [[] for _ in range(num_9th_workshops)]
 
 # assign workshops for pairs of students
 (
@@ -554,8 +576,8 @@ ws_1_9th = cleanup_workshop_assignments_solos(ws_1_ninth)
 # ### SECOND ROUND OF WORKSHOPS ###
 
 # initialize emtpy workshop lists
-seventh_eighth_workshops_lists = [[] for _ in range(19)]
-ninth_workshops_lists = [[] for _ in range(9)]
+seventh_eighth_workshops_lists = [[] for _ in range(num_7th8th_workshops)]
+ninth_workshops_lists = [[] for _ in range(num_9th_workshops)]
 
 # assign workshops for pairs of students
 (
@@ -607,7 +629,7 @@ ws_2_9th = cleanup_workshop_assignments_solos(ws_2_ninth)
 ### THIRD (FINAL) ROUND OF WORKSHOPS ###
 
 # initialize emtpy workshop lists
-seventh_eighth_workshops_lists = [[] for _ in range(19)]
+seventh_eighth_workshops_lists = [[] for _ in range(num_7th8th_workshops)]
 
 # assign workshops for pairs of students
 ws_3_seventh_eighth_pairs = assign_final_round_of_workshops_7th8th(
