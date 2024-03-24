@@ -6,7 +6,7 @@ Still no unit tests/documentation for the code. Just focused on getting it to wo
 
 More details to come later. 
 
-R.W.B 3/18/2024 - 3/24/2024
+R.W.B. 3/18/2024 - 3/24/2024
 
 Here is the Python code to sort Cornell's yearly EYH participants into workshops based on partner assignemnts/preferences/workshop capacities, etc.
 
